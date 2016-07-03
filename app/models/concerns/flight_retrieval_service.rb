@@ -2,18 +2,7 @@ module FlightRetrievalService
     extend ActiveSupport::Concern
     include Email
     URL = 'http://www.theflightdeal.com/category/flight-deals/sfo/'
-    EMAIL_BASE = {
-        via: :smtp,
-        via_options: {
-            address: 'smtp.sendgrid.net',
-            port: '587',
-            domain: 'heroku.com',
-            user_name: ENV['SENDGRID_USERNAME'],
-            password: ENV['SENDGRID_PASSWORD'],
-            authentication: :plain,
-            enable_starttls_audestination: true
-        }
-    }
+
     def flights_page
       Nokogiri::HTML(open(URL))
     end

@@ -1,6 +1,17 @@
 module Email
   extend ActiveSupport::Concern
-
+  EMAIL_BASE = {
+      via: :smtp,
+      via_options: {
+          address: 'smtp.sendgrid.net',
+          port: '587',
+          domain: 'heroku.com',
+          user_name: ENV['SENDGRID_USERNAME'],
+          password: ENV['SENDGRID_PASSWORD'],
+          authentication: :plain,
+          enable_starttls_audestination: true
+      }
+  }
   def error(message, body)
     email(to: 'byoung1018@gmail.com',
           subject: "Error: #{message}",
@@ -16,13 +27,12 @@ module Email
   def send_new_flights(flights)
     email(to: 'byoung1018@gmail.com',
           subject: "New Flights",
-          body: flights.map{|flight| flight.to_s}.join("\n")
+          body: flights.map{|flight| flight.to_s}.join("\n"))
   end
 
   def email(options)
     unless ENV['RAILS_ENV'] == 'development'
       options = EMAIL_BASE.merge(options)
-      binding.pry
       Pony.mail(options)
     end
   end
