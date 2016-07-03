@@ -7,7 +7,8 @@ end
 
 task send_new_flights: :environment do
   f = Flight.new
-  f.send_new_flights(f.new_flights)
+  new_flights = f.new_flights
+  f.send_new_flights(new_flights) unless new_flights.empty?
 end
 
 task test_email: :environment do
