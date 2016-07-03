@@ -1,7 +1,7 @@
 module FlightRetrievalService
     extend ActiveSupport::Concern
     include Email
-    URL = 'http://www.theflightdeal.com/category/flight-deals/sfo/'
+    URL = 'http://www.theflightdeal.com/category/flight-deals/'
 
     def flights_page
       Nokogiri::HTML(open(URL))
