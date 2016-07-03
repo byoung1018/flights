@@ -11,34 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160703031116) do
+ActiveRecord::Schema.define(version: 20160703182017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cities", force: :cascade do |t|
     t.string   "name",       null: false
-    t.integer  "state_id"
-    t.integer  "country_id", null: false
+    t.string   "state"
+    t.string   "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "countries", force: :cascade do |t|
-    t.string   "name",       null: false
+  create_table "destinations", force: :cascade do |t|
+    t.integer  "city_id",    null: false
+    t.integer  "flight_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "flights", force: :cascade do |t|
-    t.integer  "to_city_id",   null: false
-    t.integer  "from_city_id", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "url",        null: false
+    t.string   "price",      null: false
+    t.string   "title",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "states", force: :cascade do |t|
-    t.string   "name",       null: false
+  create_table "origins", force: :cascade do |t|
+    t.integer  "city_id",    null: false
+    t.integer  "flight_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
