@@ -5,4 +5,10 @@ class Flight < ActiveRecord::Base
   has_one :to_state, through: :to_city, source: :state
   has_one :from_country, through: :from_city, source: :country
   has_one :from_state, through: :from_city, source: :state
+  include FlightRetrievalService
+  def test
+    # new_flights
+    email(to: 'byoung1018@gmail.com', subject: 'test subject', body: 'test body')
+  end
+
 end

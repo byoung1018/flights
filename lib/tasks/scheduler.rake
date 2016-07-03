@@ -4,3 +4,7 @@ task :update_feed => :environment do
   puts Country.last
   puts "done."
 end
+
+task :test_email => :environment do
+  Flight.new.test
+end
