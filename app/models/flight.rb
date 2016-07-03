@@ -6,11 +6,6 @@ class Flight < ActiveRecord::Base
 
   include FlightRetrievalService
   include Email
-  def test
-    # new_flights
-    # email(to: 'byoung1018@gmail.com', subject: 'test subject', body: 'test body')
-    recent_flights
-  end
 
   def self.normalize_and_save(raw_flight)
     norm_flight = {}
