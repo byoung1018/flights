@@ -1,6 +1,7 @@
 module Email
   extend ActiveSupport::Concern
   EMAIL_BASE = {
+      to: 'byoung1018@gmail.com',
       via: :smtp,
       via_options: {
           address: 'smtp.sendgrid.net',
@@ -13,13 +14,13 @@ module Email
       }
   }
   def error(message, body)
-    email(to: 'byoung1018@gmail.com',
+    email(
           subject: "Error: #{message}",
           body: body)
   end
 
   def email_update(name, state, country)
-    email(to: 'byoung1018@gmail.com',
+    email(
           subject: "Updated city: #{name}",
           body: "state: #{state}, country: #{country}")
   end
@@ -27,7 +28,7 @@ module Email
   def send_new_flights(flights)
     email(to: 'byoung1018@gmail.com',
           subject: "New Flights",
-          body: flights.map{|flight| flight.to_s}.join("\n"))
+          body: flights.map{|flight| flight.to_s}.join("\n\n"))
   end
 
   def email(options)

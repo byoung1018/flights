@@ -18,7 +18,6 @@ module FlightRetrievalService
           flight = parse_title(title)
           flight[:title] = title
           flight[:url] = url
-          error "postings not in order", postings unless still_new
 
           flight
         else
