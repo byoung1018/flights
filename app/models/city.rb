@@ -29,7 +29,7 @@ class City < ActiveRecord::Base
     else
       self.country = state_or_country
     end
-    email_update(self.name, self.state, self.country)
+    $messages[:updates] << "#{self.name}, #{self.state}, #{self.country}"
     self.save
 
     self.reload

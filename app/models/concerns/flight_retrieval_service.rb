@@ -36,6 +36,7 @@ module FlightRetrievalService
     def parse_title(title)
       flight = {airlines: []}
       title.gsub(' (and vice versa)', '')
+      title = title.split('.')[0...-1].join('.')
       colon_parsed = title.split(': ')
 
       airline_prices = colon_parsed[0].split(' – ')
@@ -45,11 +46,11 @@ module FlightRetrievalService
       cities = colon_parsed[1].split (' – ')
       origin_cities = cities[0]
       cities_states = origin_cities.split(', ')
-      error "Multiple cities/states", origin_cities if cities_states.count > 2
-      flight[:origin_state] = cities_states[1].split(' (')[0]
+      $messages[:error] << "Multiple cities/states: #{origin_cities}" if cities_states.count > 2
+      flight[:origin_state] = cities_states[1]
       flight[:origin_cities] = cities_states[0].split(' / ')
 
-      destination_location = cities[1].split('.')[0...-1].join('.').split(', ')
+      destination_location = cities[1].split(', ')
       flight[:destination_city] = destination_location[0]
       flight[:destination_country] = destination_location[1]
 

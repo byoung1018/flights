@@ -25,10 +25,15 @@ module Email
           body: "state: #{state}, country: #{country}")
   end
 
-  def send_new_flights(flights)
-    email(to: 'byoung1018@gmail.com',
+  def send_new_flights(flights, messages)
+    body = flights.map{|flight| flight.to_s}
+            + messages[:errors]
+            + messages[:updates]
+
+    email(
           subject: "New Flights",
-          body: flights.map{|flight| flight.to_s}.join("\n\n"))
+          body: body.join("\n\n")
+    )
   end
 
   def email(options)

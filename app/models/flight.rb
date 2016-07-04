@@ -19,7 +19,7 @@ class Flight < ActiveRecord::Base
     end
 
     flight = self.new(norm_flight)
-    error "Couldn't save flight", flight unless flight.save
+    $messages[:error] << "Couldn't save flight: #{flight}" unless flight.save
 
     flight
   end

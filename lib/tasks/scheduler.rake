@@ -1,4 +1,4 @@
-desc "This ta.sk is called by the Heroku scheduler add-on"
+desc "This task is called by the Heroku scheduler add-on"
 task update_feed: :environment do
   puts "Starting Task"
   puts Country.last
@@ -6,9 +6,11 @@ task update_feed: :environment do
 end
 
 task send_new_flights: :environment do
+  $messages = {errors: [], updates: []}
   f = Flight.new
   new_flights = f.new_flights
-  f.send_new_flights(new_flights) unless new_flights.empty?
+
+  f.send_new_flights(new_flights, $messages) unless new_flights.empty?
 end
 
 task test_email: :environment do
