@@ -27,6 +27,7 @@ module Email
 
   def send_new_flights(flights, messages)
     body = flights.map{|flight| flight.to_s} + messages[:errors] + messages[:updates]
+    body = body.unshift("Flights:")
     email(
           subject: "New Flights",
           body: body.join("\n\n")

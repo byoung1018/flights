@@ -35,7 +35,7 @@ module FlightRetrievalService
 
     def parse_title(title)
       flight = {airlines: []}
-      title.gsub(' (and vice versa)', '')
+      title = title.gsub(' (and vice versa)', '')
       title = title.split('.')[0...-1].join('.')
       colon_parsed = title.split(': ')
 
