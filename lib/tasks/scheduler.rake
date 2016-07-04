@@ -6,10 +6,9 @@ task update_feed: :environment do
 end
 
 task send_new_flights: :environment do
-  $messages = {errors: [], updates: []}
+  $messages = {errors: ["Errors:"], updates: ["Updates:"]}
   f = Flight.new
   new_flights = f.new_flights
-
   f.send_new_flights(new_flights, $messages) unless new_flights.empty?
 end
 
