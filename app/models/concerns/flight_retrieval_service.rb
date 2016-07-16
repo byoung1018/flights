@@ -2,13 +2,13 @@ module FlightRetrievalService
     extend ActiveSupport::Concern
     include Email
     URL = 'http://www.theflightdeal.com/category/flight-deals/'
-
-    def flights_page
-      Nokogiri::HTML(open(URL))
+    SF_URL = 'http://www.theflightdeal.com/category/flight-deals/sfo'
+    def new_sf_flights
+      new_flight_data(CALI_URL)
     end
 
-    def new_flight_data
-      postings = flights_page.css(".post-title > a")
+    def new_flight_data(url)
+      postings = Nokogiri::HTML(open(url)).css(".post-title > a")
 
       still_new = false
       postings.map do |posting|
@@ -27,8 +27,10 @@ module FlightRetrievalService
       end.compact
     end
 
-    def new_flights
-      new_flight_data.map do |new_flight|
+    end
+
+    def all_new_flights
+      new_flight_data(URL).map do |new_flight|
         Flight.normalize_and_save(new_flight)
       end
     end
