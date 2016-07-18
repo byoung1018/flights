@@ -4,13 +4,12 @@ module FlightRetrievalService
     URL = 'http://www.theflightdeal.com/category/flight-deals/'
     SF_URL = 'http://www.theflightdeal.com/category/flight-deals/sfo'
     def new_sf_flights
-      new_flight_data(CALI_URL)
+      new_flight_data(SF_URL)
     end
 
     def new_flight_data(url)
       postings = Nokogiri::HTML(open(url)).css(".post-title > a")
 
-      still_new = false
       postings.map do |posting|
         url = posting.attribute('href').value
         if Flight.where(url: url).count == 0
@@ -20,13 +19,8 @@ module FlightRetrievalService
           flight[:url] = url
 
           flight
-        else
-          still_new = false
-          nil
         end
       end.compact
-    end
-
     end
 
     def all_new_flights
@@ -58,5 +52,4 @@ module FlightRetrievalService
 
       flight
     end
-
 end
