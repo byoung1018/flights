@@ -10,7 +10,7 @@ module FlightRetrievalService
     def new_flight_data(url)
       postings = Nokogiri::HTML(open(url)).css(".post-title > a")
 
-      postings.map do |posting|
+      flights = postings.map do |posting|
         url = posting.attribute('href').value
         if Flight.where(url: url).count == 0
           title = posting.attribute("title").value.gsub('Permanent Link: ', '')
@@ -18,15 +18,13 @@ module FlightRetrievalService
           flight[:title] = title
           flight[:url] = url
 
-          flight
+          Flight.normalize_and_save(flight)
         end
       end.compact
     end
 
     def all_new_flights
-      new_flight_data(URL).map do |new_flight|
-        Flight.normalize_and_save(new_flight)
-      end
+      new_flight_data(URL)
     end
 
     def parse_title(title)
