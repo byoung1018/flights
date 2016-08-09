@@ -7,6 +7,8 @@ class Flight < ActiveRecord::Base
   include FlightRetrievalService
   include Email
 
+  validates_presence_of :destinations, :origins, :price, :title, :url
+
   def self.normalize_and_save(raw_flight)
     norm_flight = {}
     norm_flight[:price] = raw_flight[:price]
@@ -19,7 +21,7 @@ class Flight < ActiveRecord::Base
     end
 
     flight = self.new(norm_flight)
-    $messages[:error] << "Couldn't save flight: #{flight}" unless flight.save
+    $messages[:errors] << "Couldn't save flight: #{flight}" unless flight.save
 
     flight
   end

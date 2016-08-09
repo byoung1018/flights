@@ -8,6 +8,9 @@ class City < ActiveRecord::Base
             "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York",
             "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
             "Pennsylvania", "Rhode Island"]
+  validates_presence_of :name
+
+
   def self.get(name, state_or_country)
     city = where(name: name).last
     if city.nil?
