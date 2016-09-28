@@ -40,7 +40,11 @@ module FlightRetrievalService
 
       flight[:airlines] = airline_prices[0].split(' / ')
 
-      cities = colon_parsed[1].split (' – ')
+      cities =  if colon_parsed[1].include?(' to ')
+        colon_parsed[1].split (' to ')
+      else
+        colon_parsed[1].split (' – ')
+      end
       origin_cities = cities[0]
       cities_states = origin_cities.split(', ')
       $messages[:errors] << "Multiple cities/states: #{origin_cities}" if cities_states.count > 2
