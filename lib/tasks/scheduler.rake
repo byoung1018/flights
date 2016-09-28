@@ -6,11 +6,15 @@ task update_feed: :environment do
 end
 
 task send_new_sf_flights: :environment do
-  $messages = {errors: ["Errors:"], updates: ["Updates:"]}
-  f = Flight.new
-  new_flights = f.new_sf_flights
+  begin
+    $messages = {errors: ["Errors:"], updates: ["Updates:"]}
+    f = Flight.new
+    new_flights = f.new_sf_flights
 
-  f.send_flights(new_flights, $messages) unless new_flights.empty?
+    f.send_flights(new_flights, $messages) unless new_flights.empty?
+  rescue Exception => e
+    Email.error(e.message, e.backtrace)
+  end
 end
 
 task test_email: :environment do
