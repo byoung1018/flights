@@ -27,7 +27,7 @@ class Flight < ActiveRecord::Base
   end
 
   def to_s
-    title
+    "#{title} - #{self.url}"
   end
 
 end

@@ -5,15 +5,24 @@ task update_feed: :environment do
   puts "done."
 end
 
-task send_new_sf_flights: :environment do
+# rake send_new_sf_flights['email1@gmail.com;email2@hotmail.com']
+task :send_new_sf_flights, [:email_addresses] => :environment do |t, args|
+  email_addresses = args[:email_addresses].split(';')
   begin
     $messages = {errors: ["Errors:"], updates: ["Updates:"]}
     f = Flight.new
     new_flights = f.new_sf_flights
-
-    f.send_flights(new_flights, $messages) unless new_flights.empty?
+    if new_flights.empty?
+      puts "no flights"
+    else
+      puts "sending flights"
+      f.send_flights(new_flights, email_addresses, $messages) unless new_flights.empty?
+    end
   rescue Exception => e
-    Email.error(e.message, e.backtrace)
+    puts "error"
+    puts e.message
+    puts e.backtrace
+    Email.new.error(e.message, e.backtrace)
   end
 end
 

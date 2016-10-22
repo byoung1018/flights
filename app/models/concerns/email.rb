@@ -1,7 +1,7 @@
 module Email
   extend ActiveSupport::Concern
-  EMAIL_BASE = {
-      to: 'byoung1018@gmail.com',
+  BASE_EMAIL = {
+      from: 'flights@scrapyscrapy.com',
       via: :smtp,
       via_options: {
           address: 'smtp.sendgrid.net',
@@ -13,32 +13,39 @@ module Email
           enable_starttls_audestination: true
       }
   }
+
   def error(message, body)
-    email(
-          subject: "Error: #{message}",
-          body: body)
+    Email.new.email(
+        subject: "Error: #{message}",
+        body: body)
   end
 
   def email_update(name, state, country)
     email(
-          subject: "Updated city: #{name}",
-          body: "state: #{state}, country: #{country}")
+        subject: "Updated city: #{name}",
+        body: "state: #{state}, country: #{country}")
   end
 
-  def send_flights(flights, messages)
-    body = flights.map{|flight| flight.to_s} + messages[:errors] + messages[:updates]
+  def send_flights(flights, email_addresses, messages)
+    body = flights.map { |flight| flight.to_s } + messages[:errors] + messages[:updates]
     body = body.unshift("Flights:")
-    email(
+
+    email_addresses.each do |email_address|
+
+      email(
+          to: email_address,
           subject: "New Flights",
           body: body.join("\n\n")
-    )
-    flights.each {|flight| flight.update_attribute :sent_email, true}
+      )
+    end
+
+    flights.each { |flight| flight.update_attribute :sent_email, true }
   end
 
+
+  #expects to:, subject:, body:
   def email(options)
-    unless ENV['RAILS_ENV'] == 'development'
-      options = EMAIL_BASE.merge(options)
-      Pony.mail(options)
-    end
+    puts "sending to #{options}"
+    Pony.mail(BASE_EMAIL.merge(options))
   end
 end
