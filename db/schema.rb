@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715164610) do
+ActiveRecord::Schema.define(version: 20161119083525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,12 +32,13 @@ ActiveRecord::Schema.define(version: 20160715164610) do
   end
 
   create_table "flights", force: :cascade do |t|
-    t.string   "url",                        null: false
-    t.string   "price",                      null: false
-    t.string   "title",                      null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.boolean  "sent_email", default: false, null: false
+    t.string   "url",                          null: false
+    t.string   "price",                        null: false
+    t.string   "title",                        null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "sent_email",   default: false, null: false
+    t.string   "availability"
   end
 
   create_table "origins", force: :cascade do |t|

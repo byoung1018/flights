@@ -31,7 +31,6 @@ module Email
     body = body.unshift("Flights:")
 
     email_addresses.each do |email_address|
-
       email(
           to: email_address,
           subject: "New Flights",

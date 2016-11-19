@@ -9,6 +9,8 @@ class Flight < ActiveRecord::Base
 
   validates_presence_of :destinations, :origins, :price, :title, :url
 
+
+  #should probably just have an init that takes in raw_flight and overload = methods for cities
   def self.normalize_and_save(raw_flight)
     norm_flight = {}
     norm_flight[:price] = raw_flight[:price]
@@ -19,6 +21,7 @@ class Flight < ActiveRecord::Base
     norm_flight[:origin_cities] = raw_flight[:origin_cities].map do |city|
       City.get(city, raw_flight[:origin_state])
     end
+    norm_flight[:availability] = raw_flight[:availability]
 
     flight = self.new(norm_flight)
     $messages[:errors] << "Couldn't save flight: #{flight}" unless flight.save
@@ -27,7 +30,7 @@ class Flight < ActiveRecord::Base
   end
 
   def to_s
-    "#{title} - #{self.url}"
+    "#{title} - #{self.url} - #{availability}"
   end
 
 end

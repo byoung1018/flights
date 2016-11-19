@@ -18,9 +18,20 @@ module FlightRetrievalService
           flight[:title] = title
           flight[:url] = url
 
+          flight.merge!(parse_detailed_flight_page(url))
           Flight.normalize_and_save(flight)
         end
       end.compact
+    end
+
+    def parse_detailed_flight_page(url)
+      page = Nokogiri::HTML(open(url))
+
+      flight = {}
+      flight[:availability] = page.css("li:contains('Valid for travel')")
+                                  .map{ |element| element.text}
+                                  .join("\n")
+      flight
     end
 
     def all_new_flights
