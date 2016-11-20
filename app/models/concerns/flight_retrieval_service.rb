@@ -4,7 +4,7 @@ module FlightRetrievalService
     URL = 'http://www.theflightdeal.com/category/flight-deals/'
     SF_URL = 'http://www.theflightdeal.com/category/flight-deals/sfo'
     def new_sf_flights
-      new_flight_data(URL)
+      new_flight_data(SF_URL)
     end
 
     def new_flight_data(url)
