@@ -9,7 +9,6 @@ module FlightRetrievalService
 
     def new_flight_data(url)
       postings = Nokogiri::HTML(open(url)).css(".post-title > a")
-
       flights = postings.map do |posting|
         url = posting.attribute('href').value
         if Flight.where(url: url).count == 0
@@ -50,6 +49,12 @@ module FlightRetrievalService
       airline_prices = colon_parsed[0].split(' – ')
 
       flight[:airlines] = airline_prices[0].split(' / ')
+      if title.include?('Flash Sale')
+        return flight.merge({origin_state: 'multiple',
+                             origin_cities: ['multiple'],
+                             destination_city: 'multiple',
+                             destination_country: 'multiple'})
+      end
       cities =  if colon_parsed[1].include?(' to ')
         colon_parsed[1].split (' to ')
       else
@@ -60,7 +65,6 @@ module FlightRetrievalService
       $messages[:errors] << "Multiple cities/states: #{origin_cities}" if cities_states.count > 2
       flight[:origin_state] = cities_states[1]
       flight[:origin_cities] = cities_states[0].split(' / ')
-
       destination_location = cities[1].split(', ')
       flight[:destination_city] = destination_location[0]
       flight[:destination_country] = destination_location[1]

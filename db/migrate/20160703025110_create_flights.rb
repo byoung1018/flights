@@ -1,4 +1,4 @@
-class CreateFlights < ActiveRecord::Migration
+class CreateFlights < ActiveRecord::Migration[4.2]
   def change
     create_table :flights do |t|
       t.string :url, null: false

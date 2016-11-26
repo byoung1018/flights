@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -16,34 +15,34 @@ ActiveRecord::Schema.define(version: 20161119083525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "cities", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "state"
-    t.string   "country"
+  create_table "cities", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "state"
+    t.string "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "destinations", force: :cascade do |t|
-    t.integer  "city_id",    null: false
-    t.integer  "flight_id",  null: false
+  create_table "destinations", id: :serial, force: :cascade do |t|
+    t.integer "city_id", null: false
+    t.integer "flight_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "flights", force: :cascade do |t|
-    t.string   "url",                          null: false
-    t.string   "price",                        null: false
-    t.string   "title",                        null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "sent_email",   default: false, null: false
-    t.string   "availability"
+  create_table "flights", id: :serial, force: :cascade do |t|
+    t.string "url", null: false
+    t.string "price", null: false
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "sent_email", default: false, null: false
+    t.string "availability"
   end
 
-  create_table "origins", force: :cascade do |t|
-    t.integer  "city_id",    null: false
-    t.integer  "flight_id",  null: false
+  create_table "origins", id: :serial, force: :cascade do |t|
+    t.integer "city_id", null: false
+    t.integer "flight_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
